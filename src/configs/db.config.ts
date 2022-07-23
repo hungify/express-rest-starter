@@ -1,12 +1,37 @@
 import mongoose from 'mongoose';
 import { mongo } from '~/configs/env.config.dev';
 
-const createConnection = (uri: string) => {
+interface Connection {
+  username?: string;
+  password?: string;
+  databaseName: string;
+}
+
+const createConnectionWithMongo = (host: string, port: number, options: Connection) => {
+  const { username, password, databaseName } = options;
+  const baseInfo = 'mongodb://';
+  const hasCredentials = username && password;
+  const uri = hasCredentials
+    ? `${baseInfo}${username}:${password}@${host}:${port}/${databaseName}`
+    : `${baseInfo}${host}:${port}/${databaseName}`;
+
   const conn = mongoose.createConnection(uri, {
     serverSelectionTimeoutMS: 5000,
     socketTimeoutMS: 5000,
     keepAlive: true,
     keepAliveInitialDelay: 300000,
+  });
+
+  conn.on('connected', () => {
+    console.log('🐱‍🏍 MongoDB connected 🎉🎉🎉');
+  });
+
+  conn.on('error', err => {
+    console.log('🐱‍🏍 MongoDB error 💩💩💩', err);
+    setTimeout(() => {
+      console.log('🐱‍🏍 Recreate MongoDB connection ✨✨✨');
+      createConnectionWithMongo(host, port, options);
+    }, 5000);
   });
 
   conn.on('disconnected', () => {
@@ -19,28 +44,19 @@ const createConnection = (uri: string) => {
   });
 
   process.on('SIGINT', async () => {
-    await connectToMongoLocal.close();
+    await conn.close();
     process.exit(0);
   });
+
   return conn;
 };
 
-let URI = '';
+const options: Connection = {
+  password: mongo.password,
+  username: mongo.username,
+  databaseName: mongo.databaseName,
+};
 
-if (mongo.username && mongo.password) {
-  URI = `mongodb://${mongo.username}:${mongo.password}@${mongo.host}:${mongo.port}/${mongo.databaseName}`;
-} else {
-  URI = `mongodb://${mongo.host}:${mongo.port}/${mongo.databaseName}`;
-}
-
-const connectToMongoLocal = createConnection(URI);
-
-connectToMongoLocal.on('connected', () => {
-  console.log('MongoDB connected');
-});
-
-connectToMongoLocal.on('error', err => {
-  console.log('MongoDB error', err);
-});
+const connectToMongoLocal = createConnectionWithMongo(mongo.host, Number(mongo.port), options);
 
 export default connectToMongoLocal;

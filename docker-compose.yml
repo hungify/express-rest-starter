@@ -1,52 +1,55 @@
-version: '3.8'
+version: '3.7'
 
 services:
-  # Nginx service
-  # proxy:
-  #   image: nginx:alpine
-  #   container_name: proxy
-  #   ports:
-  #     - '80:80'
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   restart: 'unless-stopped'
-  #   networks:
-  #     - db-network
-
-  # Express service
-  server:
-    container_name: server
+  api:
     build:
       context: .
-      target: development-build-stage
       dockerfile: Dockerfile
+      target: development-build-stage
+    container_name: api
     volumes:
       - .:/app # mount từ môi trường gốc vào trong để nếu các bạn thay đổi code thì bên trong sẽ tự động cập nhật
-      - /app/node_modules
+    command: yarn dev
+
     environment:
       - PORT=${PORT}
+
       - MONGO_DB_HOST=${MONGO_DB_HOST}
       - MONGO_DB_PORT=${MONGO_DB_PORT}
       - MONGO_DB_NAME=${MONGO_DB_NAME}
+
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_EXPIRE_IN=${REDIS_EXPIRE_IN}
+      - REDIS_CONNECT_TIMEOUT=${REDIS_CONNECT_TIMEOUT}
+
+      - JWT_SECRET=${JWT_SECRET}
+
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - ACCESS_TOKEN_EXPIRES_IN=${ACCESS_TOKEN_EXPIRES_IN}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      - REFRESH_TOKEN_EXPIRES_IN=${REFRESH_TOKEN_EXPIRES_IN}
     ports:
       - '${PORT}:${PORT}'
-    restart: 'unless-stopped'
+    restart: unless-stopped
     depends_on:
-      - mongodb
+      - redis
+      - mongo
     networks:
       - db-network
 
-  # Mongodb service
-  mongodb:
+  mongo:
     image: mongo:5.0.8-focal
-    container_name: mongodb
+    container_name: mongo
     volumes:
       - .docker/data/db:/data/db
-    restart: 'unless-stopped'
+    restart: unless-stopped
     environment:
       - MONGO_DB_HOST=${MONGO_DB_HOST}
       - MONGO_DB_PORT=${MONGO_DB_PORT}
       - MONGO_DB_NAME=${MONGO_DB_NAME}
+
     ports:
       - '${MONGO_DB_PORT}:${MONGO_DB_PORT}'
     networks:
