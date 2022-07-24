@@ -38,10 +38,11 @@ services:
       - '${PORT}:${PORT}'
     restart: unless-stopped
     depends_on:
-      - redis
       - mongo
+      - redis
     networks:
       - db-network
+      - catch-network
 
   mongo:
     image: mongo:5.0.8-focal
@@ -63,6 +64,25 @@ services:
     networks:
       - db-network
 
+  redis:
+    image: redis:7.0.3-alpine
+    container_name: redis
+    volumes:
+      - .docker/data/redis:/data
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_EXPIRE_IN=${REDIS_EXPIRE_IN}
+      - REDIS_CONNECT_TIMEOUT=${REDIS_CONNECT_TIMEOUT}
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    networks:
+      - catch-network
+
 networks:
   db-network:
+    driver: bridge
+  catch-network:
     driver: bridge

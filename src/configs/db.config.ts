@@ -26,8 +26,8 @@ const createConnectionWithMongo = (host: string, port: number, options: Connecti
     console.log('🐱‍🏍 MongoDB connected 🎉🎉🎉');
   });
 
-  conn.on('error', err => {
-    console.log('🐱‍🏍 MongoDB error 💩💩💩', err);
+  conn.on('error', (err) => {
+    console.log('🐞🐞🐞 MongoDB error 💩💩💩', err);
     setTimeout(() => {
       console.log('🐱‍🏍 Recreate MongoDB connection ✨✨✨');
       createConnectionWithMongo(host, port, options);

@@ -23,18 +23,17 @@
     "importHelpers": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
-      "~/config": ["src/config"],
-      "~/controllers/*": ["src/controllers/*"],
-      "~/exceptions/*": ["src/exceptions/*"],
-      "~/interfaces/*": ["src/interfaces/*"],
-      "~/middlewares/*": ["src/middlewares/*"],
-      "~/models/*": ["src/models/*"],
-      "~/routes/*": ["src/routes/*"],
-      "~/services/*": ["src/services/*"],
-      "~/utils/*": ["src/utils/*"]
+      "~/api/v1/controllers/*": ["src/api/v1/controllers/*"],
+      "~/api/v1/middlewares/*": ["src/api/v1/middlewares/*"],
+      "~/api/v1/models/*": ["src/api/v1/models/*"],
+      "~/api/v1/routes/*": ["src/api/v1/routes/*"],
+      "~/api/v1/services/*": ["src/api/v1/services/*"],
+      "~/api/configs": ["src/configs/*"],
+      "~/api/interfaces/*": ["src/interfaces/*"],
+      "~/api/utils/*": ["src/utils/*"],
+      "~/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.json", ".env", "server.ts"],
+  "include": ["src/**/*.ts", "src/**/*.json", ".env", "src/server.ts"],
   "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
 }

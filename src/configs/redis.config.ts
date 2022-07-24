@@ -15,7 +15,11 @@ redisClient.on('ready', () => {
 
 redisClient.on('error', function (err) {
   if (err.code == 'ECONNREFUSED') {
-    redisClient.disconnect();
-    return;
-  } else console.log('Redis error: ' + err.message);
+    return redisClient.disconnect();
+  } else {
+    console.log('🐞🐞🐞 Redis error 💩💩💩', err);
+    throw new Error(err);
+  }
 });
+
+export default redisClient;

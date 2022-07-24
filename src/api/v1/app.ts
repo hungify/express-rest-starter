@@ -6,15 +6,35 @@ import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import connectToMongoLocal from '~/configs/db.config';
+import rootRouter from '~/api/v1/routes';
+import multerErrorHandler from '~/api/v1/middlewares/multer.middleware';
+import corsOptions from '~/configs/cors.config';
+import errorHandler, { catchErrorAndForward } from '~/api/v1/middlewares/error.middleware';
+import logToFile from '~/api/v1/middlewares/log.middleware';
 
 const bootstrap = () => {
   const app = express();
-  app.use([helmet(), cors(), morgan('dev'), compression(), cookieParser(), express.json()]);
+  app.use([
+    helmet(),
+    morgan('dev'),
+    compression(),
+    cookieParser(),
+    express.json(),
+    cors(corsOptions),
+    multerErrorHandler,
+  ]);
+  app.use('/api/v1', rootRouter);
+
   app.get('/', (req: Request, res: Response) => {
     return res.status(200).json({
       message: 'The API Server is running!. Redirect to /api/v1 to see the API endpoints.',
     });
   });
+
+  app.use(catchErrorAndForward);
+  app.use(errorHandler);
+  app.use(logToFile);
+
   return app;
 };
 

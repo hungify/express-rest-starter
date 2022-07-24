@@ -1,5 +1,5 @@
 import https from 'http';
-import app from '~/app';
+import app from '~/api/v1/app';
 import { port } from '~/configs/env.config.dev';
 
 app.set('port', port);
