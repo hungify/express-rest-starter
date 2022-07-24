@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import type { Error } from '~/interfaces/error.interface';
 import httpErrors from 'http-errors';
 
-export const catchErrorAndForward = (req: Request, res: Response, next: NextFunction) => {
-  next(httpErrors(404));
+export const forwardError = (req: Request, res: Response, next: NextFunction) => {
+  next(new httpErrors.NotFound("This route doesn't exist"));
 };
 
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {

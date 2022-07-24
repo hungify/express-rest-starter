@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { JwtPayload } from '~/interfaces/user.interface';
+import { JwtPayload } from '~/interfaces/jwt.interface';
 
 export interface UserAuthRequest extends Request {
-  payload: JwtPayload;
+  user: JwtPayload; // same as passport jwt payload
 }

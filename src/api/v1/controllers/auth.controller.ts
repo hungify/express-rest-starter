@@ -52,7 +52,7 @@ const authController = {
       throw new httpErrors.InternalServerError('Error while generating tokens');
     }
 
-    res.cookie('accessToken', accessToken, {
+    res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: true,
       secure: false, //True in production

@@ -18,6 +18,12 @@ const userService = {
     const foundUser = await UserModel.findOne({ email });
     return foundUser;
   },
+
+  async getUserById(id: string) {
+    const foundUser = await UserModel.findById(id);
+    return foundUser;
+  },
+
   async saveUser(user: Omit<User, 'role'>): Promise<UserDocument> {
     const newUser = new UserModel(user);
     const savedUser = await newUser.save();

@@ -3,7 +3,7 @@ import httpErrors from 'http-errors';
 import JWT from 'jsonwebtoken';
 import { jwt } from '~/configs/env.config.dev';
 import { UserAuthRequest } from '~/interfaces/core.interface';
-import { JwtPayload } from '~/interfaces/user.interface';
+import { JwtPayload } from '~/interfaces/jwt.interface';
 import redisQuery from '~/utils/redis.util';
 
 export const verifyAccessToken = async (req: UserAuthRequest, res: Response, next: NextFunction) => {
@@ -16,7 +16,7 @@ export const verifyAccessToken = async (req: UserAuthRequest, res: Response, nex
     const secret = jwt.accessTokenSecret;
 
     const payload = (await JWT.verify(token, secret)) as JwtPayload;
-    req.payload = payload;
+    req.user = payload;
     return next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {

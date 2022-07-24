@@ -6,7 +6,7 @@ import { Role } from '~/interfaces/role.interface';
 const verifyRoles = (allowedRoles: Role[] | Role) => {
   return (req: UserAuthRequest, res: Response, next: NextFunction) => {
     if (allowedRoles.length > 0) {
-      if (req?.payload?.role && allowedRoles.includes(req?.payload?.role)) {
+      if (req?.user?.role && allowedRoles.includes(req?.user?.role)) {
         return next();
       } else {
         return next(new httpErrors.Forbidden("You don't have permission to access this resource"));

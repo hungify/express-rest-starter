@@ -1,4 +1,3 @@
-import httpErrors from 'http-errors';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -9,8 +8,9 @@ import connectToMongoLocal from '~/configs/db.config';
 import rootRouter from '~/api/v1/routes';
 import multerErrorHandler from '~/api/v1/middlewares/multer.middleware';
 import corsOptions from '~/configs/cors.config';
-import errorHandler, { catchErrorAndForward } from '~/api/v1/middlewares/error.middleware';
+import errorHandler, { forwardError } from '~/api/v1/middlewares/error.middleware';
 import logToFile from '~/api/v1/middlewares/log.middleware';
+import passport from '~/api/v1/middlewares/passport.middleware';
 
 const bootstrap = () => {
   const app = express();
@@ -20,6 +20,7 @@ const bootstrap = () => {
     compression(),
     cookieParser(),
     express.json(),
+    passport.initialize(),
     cors(corsOptions),
     multerErrorHandler,
   ]);
@@ -31,7 +32,7 @@ const bootstrap = () => {
     });
   });
 
-  app.use(catchErrorAndForward);
+  app.use(forwardError);
   app.use(errorHandler);
   app.use(logToFile);
 

@@ -1,4 +1,4 @@
-import { JwtPayload, Payload } from '~/interfaces/user.interface';
+import { JwtPayload, Payload } from '~/interfaces/jwt.interface';
 import httpErrors from 'http-errors';
 import { Request, Response, NextFunction } from 'express';
 import JWT from 'jsonwebtoken';
