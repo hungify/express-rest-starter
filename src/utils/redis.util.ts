@@ -1,7 +1,7 @@
 import redisClient from '~/configs/redis.config';
 
 const redisQuery = {
-  setWithTTL(key: string, value: any, ttlSeconds: number | string) {
+  setWithTTL(key: string, value: object | string | number, ttlSeconds: number | string) {
     try {
       return redisClient.set(key, JSON.stringify(value), 'EX', ttlSeconds || 60);
     } catch (error) {
@@ -22,7 +22,7 @@ const redisQuery = {
       throw new Error(error);
     }
   },
-  updateKeepAlive(key: string, value: any) {
+  updateKeepAlive(key: string, value: object | string | number) {
     try {
       return redisClient.set(key, JSON.stringify(value), 'KEEPTTL', 'XX');
     } catch (error) {

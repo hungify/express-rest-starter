@@ -33,8 +33,8 @@ const bootstrap = () => {
   });
 
   app.use(forwardError);
-  app.use(errorHandler);
   app.use(logToFile);
+  app.use(errorHandler);
 
   return app;
 };

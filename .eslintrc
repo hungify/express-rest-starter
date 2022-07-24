@@ -11,8 +11,8 @@
     "@typescript-eslint/no-parameter-properties": 0,
     "@typescript-eslint/interface-name-prefix": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
-    "@typescript-eslint/no-explicit-any": "true",
-    "@typescript-eslint/ban-types": "true",
-    "@typescript-eslint/no-var-requires": "true"
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/ban-types": "error",
+    "@typescript-eslint/no-var-requires": "error"
   }
 }

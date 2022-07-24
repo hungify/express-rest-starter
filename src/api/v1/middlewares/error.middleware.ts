@@ -6,7 +6,7 @@ export const forwardError = (req: Request, res: Response, next: NextFunction) =>
   next(new httpErrors.NotFound("This route doesn't exist"));
 };
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (err: Error, req: Request, res: Response) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

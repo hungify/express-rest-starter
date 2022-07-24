@@ -1,4 +1,3 @@
-import JWT from 'jsonwebtoken';
 import { Role } from '~/interfaces/role.interface';
 
 export interface User {

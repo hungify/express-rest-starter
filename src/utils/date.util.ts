@@ -12,9 +12,9 @@ export const dateToDashesWithTime = (date: Date) => {
 };
 
 export const dateToDashes = (date: Date) => {
-  var d = date.getDate();
-  var m = date.getMonth() + 1; //Month from 0 to 11
-  var y = date.getFullYear();
+  const d = date.getDate();
+  const m = date.getMonth() + 1; //Month from 0 to 11
+  const y = date.getFullYear();
   return `${d <= 9 ? '0' + d : d}-${m <= 9 ? '0' + m : m}-${y}`;
 };
 

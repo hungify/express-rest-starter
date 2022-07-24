@@ -1,8 +1,8 @@
-import { JwtPayload, Payload } from '~/interfaces/jwt.interface';
+import { Request } from 'express';
 import httpErrors from 'http-errors';
-import { Request, Response, NextFunction } from 'express';
 import JWT from 'jsonwebtoken';
 import { jwt, redis } from '~/configs/env.config.dev';
+import { JwtPayload, Payload } from '~/interfaces/jwt.interface';
 import redisQuery from '~/utils/redis.util';
 
 export const signInAccessToken = async ({ userId, role }: Payload) => {

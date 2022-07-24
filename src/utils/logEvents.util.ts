@@ -15,7 +15,7 @@ const logEvents = async (message: string, fileLogName: string) => {
   try {
     await fsPromises.appendFile(logFilePath, logItem);
   } catch (err) {
-    console.log(err);
+    throw new Error(err);
   }
 };
 
