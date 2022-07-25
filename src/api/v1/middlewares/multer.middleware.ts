@@ -17,7 +17,7 @@ const multerErrorHandler = (err: MulterError, req: Request, res: Response, next:
       return next(httpErrors(413, 'Unexpected file'));
     }
   }
-  next(err);
+  return next(err);
 };
 
 export default multerErrorHandler;

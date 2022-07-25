@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import userService from '~/api/v1/services/user.service';
+import { NextFunction, Request, Response } from 'express';
 import httpErrors from 'http-errors';
-import { dayToSeconds } from '~/utils/date.util';
-import { jwt } from '~/configs/env.config.dev';
-import { revokeRefreshToken, signInAccessToken, signInRefreshToken } from '~/api/v1/services/auth.service';
 import { verifyRefreshToken } from '~/api/v1/middlewares/jwt.middleware';
+import { revokeRefreshToken, signInAccessToken, signInRefreshToken } from '~/api/v1/services/auth.service';
+import userService from '~/api/v1/services/user.service';
+import { jwt } from '~/configs/env.config.dev';
+import { dayToSeconds } from '~/utils/date.util';
 
 const authController = {
   async register(req: Request, res: Response) {

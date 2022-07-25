@@ -1,16 +1,15 @@
-import express, { Request, Response } from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import connectToMongoLocal from '~/configs/db.config';
-import rootRouter from '~/api/v1/routes';
+import cors from 'cors';
+import express, { Request, Response } from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import errorMiddleware, { forward404Error } from '~/api/v1/middlewares/error.middleware';
 import multerErrorHandler from '~/api/v1/middlewares/multer.middleware';
-import corsOptions from '~/configs/cors.config';
-import errorHandler, { forwardError } from '~/api/v1/middlewares/error.middleware';
-import logToFile from '~/api/v1/middlewares/log.middleware';
 import passport from '~/api/v1/middlewares/passport.middleware';
+import rootRouter from '~/api/v1/routes';
+import corsOptions from '~/configs/cors.config';
+import connectToMongoLocal from '~/configs/db.config';
 
 const bootstrap = () => {
   const app = express();
@@ -21,8 +20,8 @@ const bootstrap = () => {
     cookieParser(),
     express.json(),
     passport.initialize(),
+    express.urlencoded({ extended: false }),
     cors(corsOptions),
-    multerErrorHandler,
   ]);
   app.use('/api/v1', rootRouter);
 
@@ -32,9 +31,9 @@ const bootstrap = () => {
     });
   });
 
-  app.use(forwardError);
-  app.use(logToFile);
-  app.use(errorHandler);
+  app.use(forward404Error);
+  app.use(multerErrorHandler);
+  app.use(errorMiddleware);
 
   return app;
 };

@@ -9,16 +9,16 @@ const tryCatchWrapper = {
       try {
         return cb.call(this, req, res, next);
       } catch (err) {
-        next(err);
+        return next(err);
       }
     };
   },
   async: function (cb: ExpressPromiseFunction): ExpressPromiseFunction {
-    return async function (req: Request, res: Response, next: NextFunction) {
+    return function (req: Request, res: Response, next: NextFunction) {
       try {
-        await cb.call(this, req, res, next).catch(next);
+        return cb.call(this, req, res, next).catch(next);
       } catch (err) {
-        next(err);
+        return next(err);
       }
     };
   },
