@@ -1,5 +1,5 @@
 {
-  "name": "node-ts-api-starter",
+  "name": "express-api-starter",
   "version": "1.0.0",
   "license": "MIT",
   "main": "server.ts",
