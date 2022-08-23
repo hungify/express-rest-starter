@@ -97,7 +97,7 @@ const authController = {
   },
 
   async logout(req: Request, res: Response) {
-    let { refreshToken } = req.params;
+    let { refreshToken } = req.cookies;
     if (!refreshToken) throw new httpErrors.BadRequest('Refresh token is required');
     if (refreshToken.startsWith('Bearer ')) refreshToken = refreshToken.slice(7);
     if (!refreshToken) {
